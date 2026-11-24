@@ -1,0 +1,20 @@
+# Runs a single local OpenSearch node for ClimateLens.
+# Start:  docker compose up -d
+# Check:  curl http://localhost:9200
+# Stop:   docker compose down
+services:
+  opensearch:
+    image: opensearchproject/opensearch:2.17.1
+    container_name: climatelens-opensearch
+    environment:
+      - discovery.type=single-node          # one node, no cluster
+      - DISABLE_SECURITY_PLUGIN=true        # no HTTPS/password for local dev
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+
+volumes:
+  opensearch-data:
